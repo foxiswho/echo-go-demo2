@@ -1,0 +1,23 @@
+
+[app]
+name="demo"
+
+[server]
+addr = ":8080"
+
+[server.domain]
+web = "localhost"
+
+[static]
+
+
+[database]
+name = "shop_demo"
+user_name = "root"
+pwd  = "root"
+host = "127.0.0.1"
+port = "3306"
+
+[redis]
+server = "127.0.0.1:6379"
+pwd = ""
