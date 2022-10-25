@@ -2,6 +2,7 @@ package router
 
 import (
 	"github.com/zxysilent/blog/conf"
+	"github.com/zxysilent/blog/internal/controller"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -35,10 +36,7 @@ func RunApp() {
 	// engine.GET("/", appctl.ViewIndex)              // 首页
 	// engine.GET("/cate/:cate", appctl.ViewCatePost) // 分类
 	//--- 页面 -- end
-	api := engine.Group("/api")          // api/
-	apiRouter(api)                       // 注册分组路由
-	adm := engine.Group("/adm", midAuth) // adm/ 需要登陆才能访问
-	admRouter(adm)                       // 注册分组路由
+	controller.AdminRouter(engine, midAuth)
 	err := engine.Start(conf.App.Addr)
 	if err != nil {
 		logs.Fatal("run error :", err.Error())
