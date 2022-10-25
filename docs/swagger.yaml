@@ -1,0 +1,224 @@
+basePath: /
+definitions:
+  model.Reply:
+    properties:
+      code:
+        example: 200
+        type: integer
+      msg:
+        example: 提示信息
+        type: string
+    type: object
+  model.User:
+    properties:
+      ctime:
+        description: 创建时间
+        type: string
+      ecount:
+        description: 错误次数
+        type: integer
+      email:
+        description: 邮箱
+        type: string
+      id:
+        description: 主键
+        type: integer
+      ltime:
+        description: 上次登录时间
+        type: string
+      name:
+        description: 姓名
+        type: string
+      num:
+        description: 账号
+        type: string
+      openid_qq:
+        description: qq
+        type: string
+      passwd:
+        description: 密码
+        type: string
+      phone:
+        description: 电话号码
+        type: string
+    type: object
+host: 127.0.0.1:8085
+info:
+  contact: {}
+  description: |-
+    token传递方式包括[get/post]token、[header]Authorization
+    /api/* 公共访问
+    /adm/* 必须传入 token
+  title: Blog’s 接口文档
+  version: "1.0"
+paths:
+  /adm/auth/edit:
+    post:
+      parameters:
+      - description: 名称
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: 号码
+        in: formData
+        name: phone
+        required: true
+        type: string
+      - description: 邮箱
+        in: formData
+        name: email
+        required: true
+        type: string
+      responses:
+        "200":
+          description: 返回数据
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Reply'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: 修改个人信息
+      tags:
+      - auth-登陆认证
+  /adm/auth/get:
+    get:
+      parameters:
+      - description: 凭证
+        in: query
+        name: token
+        required: true
+        type: string
+      responses:
+        "200":
+          description: 返回数据
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Reply'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.User'
+              type: object
+      summary: 获取登录信息
+      tags:
+      - auth-登陆认证
+  /adm/auth/passwd:
+    post:
+      parameters:
+      - description: 旧密码
+        in: formData
+        name: opasswd
+        required: true
+        type: string
+      - description: 新密码
+        in: formData
+        name: npasswd
+        required: true
+        type: string
+      responses:
+        "200":
+          description: 返回数据
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Reply'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: 修改自己的密码
+      tags:
+      - auth-登陆认证
+  /adm/upload/file:
+    post:
+      consumes:
+      - multipart/form-data
+      parameters:
+      - description: token
+        in: query
+        name: token
+        required: true
+        type: string
+      - description: file
+        in: formData
+        name: file
+        required: true
+        type: file
+      responses: {}
+      summary: 上传文件
+      tags:
+      - ctrl-系统相关
+  /adm/upload/image:
+    post:
+      consumes:
+      - multipart/form-data
+      parameters:
+      - description: token
+        in: query
+        name: token
+        required: true
+        type: string
+      - description: file
+        in: formData
+        name: file
+        required: true
+        type: file
+      responses: {}
+      summary: 上传图片并裁剪
+      tags:
+      - ctrl-系统相关
+  /api/auth/login:
+    post:
+      consumes:
+      - multipart/form-data
+      parameters:
+      - default: zxysilent
+        description: 账号
+        in: formData
+        name: num
+        required: true
+        type: string
+      - default: zxyslt
+        description: 密码
+        in: formData
+        name: pass
+        required: true
+        type: string
+      responses:
+        "200":
+          description: 返回数据
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Reply'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: 登陆
+      tags:
+      - auth-登陆认证
+  /api/auth/logout:
+    post:
+      responses: {}
+      summary: 注销登录
+      tags:
+      - auth-登陆认证
+  /api/auth/vcode:
+    get:
+      consumes:
+      - multipart/form-data
+      responses:
+        "200":
+          description: 返回数据
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Reply'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: 验证码
+      tags:
+      - auth-登陆认证
+swagger: "2.0"

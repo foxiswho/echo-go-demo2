@@ -5,13 +5,14 @@ import (
 	"crypto/hmac"
 	"crypto/sha1"
 	"encoding/base64"
-	"github.com/zxysilent/blog/conf"
-	"github.com/zxysilent/blog/internal/rate"
-	"github.com/zxysilent/blog/internal/token"
-	"github.com/zxysilent/blog/internal/vcode"
-	"github.com/zxysilent/blog/model"
 	"strconv"
 	"time"
+
+	"github.com/zxysilent/blog/conf"
+	"github.com/zxysilent/blog/internal/model"
+	"github.com/zxysilent/blog/internal/token"
+	"github.com/zxysilent/blog/internal/tools/rate"
+	"github.com/zxysilent/blog/internal/vcode"
 
 	"github.com/labstack/echo/v4"
 	"github.com/zxysilent/utils"
@@ -22,14 +23,6 @@ var loginLimiter = rate.NewLimiter(20, 5)
 
 const maxErrLogin = 5
 
-// UserLogin doc
-// @Tags auth-登陆认证
-// @Summary 登陆
-// @Accept mpfd
-// @Param num formData string true "账号" default(zxysilent)
-// @Param pass formData string true "密码" default(zxyslt)
-// @Success 200 {object} model.Reply{data=string} "返回数据"
-// @Router /api/auth/login [post]
 func AuthLogin(ctx echo.Context) error {
 	ct, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()

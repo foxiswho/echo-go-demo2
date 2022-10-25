@@ -1,0 +1,1 @@
+用来放置 API 的描述文件，如：OpenAPI/Swagger 文件，JSON Schema，protobuf 文件。

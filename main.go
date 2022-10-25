@@ -6,8 +6,8 @@ import (
 	"syscall"
 
 	"github.com/zxysilent/blog/conf"
-	"github.com/zxysilent/blog/model"
-	"github.com/zxysilent/blog/router"
+	"github.com/zxysilent/blog/internal/model"
+	"github.com/zxysilent/blog/internal/router"
 
 	"github.com/zxysilent/blog/logs"
 )

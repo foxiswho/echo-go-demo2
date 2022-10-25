@@ -1,7 +1,7 @@
 package router
 
 import (
-	"github.com/zxysilent/blog/control/sysctl"
+	"github.com/zxysilent/blog/internal/control/sysctl"
 
 	"github.com/labstack/echo/v4"
 )
