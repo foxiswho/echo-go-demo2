@@ -6,7 +6,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	"github.com/zxysilent/blog/logs"
+	"github.com/zxysilent/blog/internal/logs"
 )
 
 // RunApp 入口

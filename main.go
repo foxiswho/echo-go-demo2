@@ -9,7 +9,7 @@ import (
 	"github.com/zxysilent/blog/internal/model"
 	"github.com/zxysilent/blog/internal/router"
 
-	"github.com/zxysilent/blog/logs"
+	"github.com/zxysilent/blog/internal/logs"
 )
 
 // @Title Blog’s 接口文档

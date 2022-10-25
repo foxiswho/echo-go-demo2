@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/BurntSushi/toml"
-	"github.com/zxysilent/blog/logs"
+	"github.com/zxysilent/blog/internal/logs"
 )
 
 const (

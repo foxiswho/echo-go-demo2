@@ -13,7 +13,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 	echoSwagger "github.com/swaggo/echo-swagger"
-	"github.com/zxysilent/blog/logs"
+	"github.com/zxysilent/blog/internal/logs"
 )
 
 const AppJsUrl = "/static/js/app.js"
