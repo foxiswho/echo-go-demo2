@@ -1,4 +1,4 @@
-package sysctl
+package admin
 
 import (
 	"image"
