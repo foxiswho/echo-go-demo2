@@ -14,13 +14,7 @@ var (
 )
 
 type config struct {
-	ReleaseMode bool   `toml:"release_mode"`
-	LogLevel    string `toml:"log_level"`
-
-	SessionStore     string `toml:"session_store"`
-	SessionSecretKey string `toml:"session_secret_key"`
-	SessionIdName    string `toml:"session_id_name"`
-	CacheStore       string `toml:"cache_store"`
+	LogLevel string `toml:"log_level"`
 
 	// 应用配置
 	App app
@@ -136,8 +130,7 @@ func InitConfig(configFile string) error {
 
 	// Set defaults.
 	Config = config{
-		ReleaseMode: false,
-		LogLevel:    "DEBUG",
+		LogLevel: "DEBUG",
 	}
 
 	if _, err := os.Stat(configFile); err != nil {
