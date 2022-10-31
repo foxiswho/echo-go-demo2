@@ -5,7 +5,7 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/zxysilent/blog/conf"
+	"github.com/pangu-2/pangu-config/configs"
 	"github.com/zxysilent/blog/internal/model"
 	"github.com/zxysilent/blog/internal/router"
 
@@ -21,12 +21,14 @@ import (
 // @BasePath /
 func main() {
 	logs.Info("app initializing")
-	conf.Init()
+	configs.LoadConfig()
 	model.Init()
 	quit := make(chan os.Signal)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM, syscall.SIGKILL)
 	logs.Info("app running")
+
 	go router.RunApp()
+
 	<-quit
 	model.Close()
 	logs.Info("app quitted")

@@ -11,7 +11,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/zxysilent/blog/conf"
 	"github.com/zxysilent/blog/internal/token"
 
 	"github.com/labstack/echo/v4"
@@ -88,7 +87,7 @@ func (t *TplRender) Render(w io.Writer, name string, data interface{}, ctx echo.
 	//开发模式
 	//每次强制读取模板
 	//每次强制加载函数
-	if conf.App.IsDev() {
+	if true {
 		t.templates, _ = utils.LoadTmpl("./views", funcMap)
 	}
 	return t.templates.ExecuteTemplate(w, name, data)
@@ -127,7 +126,7 @@ func initRender() *TplRender {
 // midAuth 登录认证中间件
 func midAuth(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(ctx echo.Context) error {
-		tokenRaw := ctx.FormValue(conf.App.TokenKey) // query/form 查找 token
+		tokenRaw := ctx.FormValue("conf.App.TokenKey") // query/form 查找 token
 		if tokenRaw == "" {
 			tokenRaw = ctx.Request().Header.Get(echo.HeaderAuthorization) // header 查找token
 			if tokenRaw == "" {
@@ -135,7 +134,7 @@ func midAuth(next echo.HandlerFunc) echo.HandlerFunc {
 			}
 		}
 		auth := token.Auth{}
-		err := auth.Decode(tokenRaw, conf.App.TokenSecret)
+		err := auth.Decode(tokenRaw, "conf.App.TokenSecret")
 		if err != nil {
 			return ctx.JSON(utils.ErrToken("请重新登陆", err.Error()))
 		}

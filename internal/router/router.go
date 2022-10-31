@@ -1,7 +1,7 @@
 package router
 
 import (
-	"github.com/zxysilent/blog/conf"
+	"github.com/pangu-2/pangu-config/configs"
 	"github.com/zxysilent/blog/internal/controller"
 
 	"github.com/labstack/echo/v4"
@@ -17,7 +17,7 @@ func RunApp() {
 	engine.Use(middleware.CORSWithConfig(crosConfig)) // 跨域设置
 	engine.HideBanner = true                          // 不显示横幅
 	engine.HTTPErrorHandler = HTTPErrorHandler        // 自定义错误处理
-	engine.Debug = conf.App.IsDev()                   // 运行模式 - echo框架好像没怎么使用这个
+	engine.Debug = true                               // 运行模式 - echo框架好像没怎么使用这个
 	RegDocs(engine)                                   // 注册文档
 	engine.Static("/dist", "dist")                    // 静态目录 - 后端专用
 	//engine.StaticFS("/static", bi.StaticFS)           // 静态目录
@@ -37,7 +37,7 @@ func RunApp() {
 	// engine.GET("/cate/:cate", appctl.ViewCatePost) // 分类
 	//--- 页面 -- end
 	controller.AdminRouter(engine, midAuth)
-	err := engine.Start(conf.App.Addr)
+	err := engine.Start(":" + configs.GetApplication().PortToString())
 	if err != nil {
 		logs.Fatal("run error :", err.Error())
 	}

@@ -8,7 +8,6 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/zxysilent/blog/conf"
 	"github.com/zxysilent/blog/internal/model"
 	"github.com/zxysilent/blog/internal/token"
 	"github.com/zxysilent/blog/internal/tools/rate"
@@ -83,12 +82,12 @@ func AuthLogin(ctx echo.Context) error {
 	auth := token.Auth{
 		Id:     mod.Id,
 		RoleId: 0,
-		ExpAt:  time.Now().Add(time.Hour * time.Duration(conf.App.TokenExp)).Unix(),
+		ExpAt:  time.Now().Add(time.Hour * time.Duration(10)).Unix(),
 	}
 	mod.Ltime = now
 	// mod.Ip = ctx.RealIP()
 	// model.UserEdit(mod, "Ltime", "Ip", "Ecount")
-	return ctx.JSON(utils.Succ("登陆成功", auth.Encode(conf.App.TokenSecret)))
+	return ctx.JSON(utils.Succ("登陆成功", auth.Encode("conf.App.TokenSecret")))
 }
 
 // AuthGet doc

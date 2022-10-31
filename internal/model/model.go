@@ -1,14 +1,12 @@
 package model
 
 import (
-	"errors"
 	"log"
 	"strings"
 
-	"github.com/zxysilent/blog/conf"
+	"github.com/pangu-2/pangu-config/configs"
 
 	"xorm.io/xorm"
-	"xorm.io/xorm/caches"
 
 	// 数据库驱动
 	_ "github.com/go-sql-driver/mysql"
@@ -22,39 +20,37 @@ var db *xorm.Engine
 func Init() {
 	// 初始化数据库操作的 Xorm
 	var err error
-	db, err = xorm.NewEngine("mysql", conf.App.Dsn())
+	db, err = xorm.NewEngine("mysql", dsn())
 	if err != nil {
 		logs.Fatal("数据库 dsn:", err.Error())
 	}
 	// 劫持xorm日志
-	if conf.App.OrmHijackLog {
-		sl := &xlog.SimpleLogger{
-			DEBUG: log.New(logs.Writer(), "", log.Ldate|log.Ltime),
-			ERR:   log.New(logs.Writer(), "", log.Ldate|log.Ltime),
-			INFO:  log.New(logs.Writer(), "", log.Ldate|log.Ltime),
-			WARN:  log.New(logs.Writer(), "", log.Ldate|log.Ltime),
-		}
-		if conf.App.IsDev() {
-			sl.SetLevel(xlog.LOG_DEBUG)
-		} else {
-			sl.SetLevel(xlog.LOG_WARNING)
-		}
-		db.SetLogger(sl)
+	sl := &xlog.SimpleLogger{
+		DEBUG: log.New(logs.Writer(), "", log.Ldate|log.Ltime),
+		ERR:   log.New(logs.Writer(), "", log.Ldate|log.Ltime),
+		INFO:  log.New(logs.Writer(), "", log.Ldate|log.Ltime),
+		WARN:  log.New(logs.Writer(), "", log.Ldate|log.Ltime),
 	}
+	if true {
+		sl.SetLevel(xlog.LOG_DEBUG)
+	} else {
+		sl.SetLevel(xlog.LOG_WARNING)
+	}
+	db.SetLogger(sl)
 	if err = db.Ping(); err != nil {
 		logs.Fatal("数据库 ping:", err.Error())
 	}
-	db.SetMaxIdleConns(conf.App.OrmIdle)
-	db.SetMaxOpenConns(conf.App.OrmOpen)
+	//db.SetMaxIdleConns(conf.App.OrmIdle)
+	//db.SetMaxOpenConns(conf.App.OrmOpen)
 	// 是否显示sql执行的语句
-	db.ShowSQL(conf.App.OrmShow)
-	if conf.App.OrmCacheUse {
-		// 设置xorm缓存
-		cacher := caches.NewLRUCacher(caches.NewMemoryStore(), conf.App.OrmCacheSize)
-		db.SetDefaultCacher(cacher)
-	}
+	//db.ShowSQL(conf.App.OrmShow)
+	// if conf.App.OrmCacheUse {
+	// 	// 设置xorm缓存
+	// 	cacher := caches.NewLRUCacher(caches.NewMemoryStore(), conf.App.OrmCacheSize)
+	// 	db.SetDefaultCacher(cacher)
+	// }
 	// mysql int(11)、tinyint(4)、smallint(6)、mediumint(9)、bigint(20)
-	if conf.App.OrmSync {
+	/*if conf.App.OrmSync {
 		err = db.Sync2(
 			// app
 			new(Cate),
@@ -70,10 +66,23 @@ func Init() {
 			db.Close()
 			logs.Fatal("数据库 sync:", err.Error())
 		}
-	}
+	}*/
 	//缓存
 	// initGlobal()
 	logs.Info("model init")
+}
+
+// demo:123456@(localhost)/demo?charset=utf8&parseTime=True&loc=Local
+func dsn() string {
+	dbC := configs.GetDatasource()
+	dsn := ""
+	if len(dbC.Url) > 0 {
+		dsn = dbC.Username + ":" + dbC.Password + "@" + dbC.Url
+	} else {
+		dsn = dbC.Username + ":" + dbC.Password + "@(" + dbC.Db + ")/" + dbC.Db + "?charset=utf8mb4&parseTime=True&loc=Local"
+	}
+	logs.Info("dsn = " + dsn)
+	return dsn
 }
 
 func Close() {
@@ -100,12 +109,12 @@ func (p *Page) Trim() string {
 
 // Stat 检查状态
 func (p *Page) Stat() error {
-	if p.Ps < conf.App.PageMin {
-		return errors.New("page size 过小")
-	}
-	if p.Ps > conf.App.PageMax {
-		return errors.New("page size 过大")
-	}
+	// if p.Ps < conf.App.PageMin {
+	// 	return errors.New("page size 过小")
+	// }
+	// if p.Ps > conf.App.PageMax {
+	// 	return errors.New("page size 过大")
+	// }
 	return nil
 }
 

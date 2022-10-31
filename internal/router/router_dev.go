@@ -7,9 +7,10 @@ import (
 
 	// docs
 	"bytes"
-	// _ "github.com/zxysilent/blog/docs"
 	"sync"
 	"time"
+
+	_ "github.com/zxysilent/blog/docs"
 
 	"github.com/labstack/echo/v4"
 	echoSwagger "github.com/swaggo/echo-swagger"

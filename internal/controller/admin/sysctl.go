@@ -11,8 +11,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/zxysilent/blog/conf"
-
 	"github.com/labstack/echo/v4"
 	"github.com/nfnt/resize"
 	"github.com/zxysilent/utils"
@@ -82,26 +80,27 @@ func UploadImage(ctx echo.Context) error {
 	dir := time.Now().Format("200601/02")
 	os.MkdirAll("./static/upload/"+dir[:6], 0755)
 	ext := path.Ext(file.Filename)
-	if conf.App.ImageCut && attr.Cut {
-		ext = ".jpg"
-	}
+	// if conf.App.ImageCut && attr.Cut {
+	// 	ext = ".jpg"
+	// }
+	ext = ".jpg"
 	name := "static/upload/" + dir + utils.RandStr(10) + ext
 	dst, err := os.Create(name)
 	if err != nil {
 		return ctx.JSON(utils.ErrIpt("目标文件创建失败,请重试", err.Error()))
 	}
 	defer dst.Close()
-	if conf.App.ImageCut && attr.Cut { //图片裁剪
+	if attr.Cut { //图片裁剪
 		imgSrc, _, err := image.Decode(src)
 		// 图片解码
 		if err != nil {
 			return ctx.JSON(utils.ErrIpt("读取图片失败,请重试", err.Error()))
 		}
 		if attr.Wd <= 0 {
-			attr.Wd = conf.App.ImageWidth
+			attr.Wd = 800
 		}
 		if attr.Hd <= 0 {
-			attr.Hd = conf.App.ImageHeight
+			attr.Hd = 800
 		}
 		// 宽度>指定宽度 防止负调整
 		dx := imgSrc.Bounds().Dx()
