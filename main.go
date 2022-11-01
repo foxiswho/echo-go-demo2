@@ -6,8 +6,8 @@ import (
 	"syscall"
 
 	"github.com/pangu-2/pangu-config/configs"
-	"github.com/zxysilent/blog/internal/model"
 	"github.com/zxysilent/blog/internal/router"
+	"github.com/zxysilent/blog/middleware/db"
 
 	"github.com/zxysilent/blog/internal/logs"
 )
@@ -22,7 +22,7 @@ import (
 func main() {
 	logs.Info("app initializing")
 	configs.LoadConfig()
-	model.Init()
+	db.Init()
 	quit := make(chan os.Signal)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM, syscall.SIGKILL)
 	logs.Info("app running")
@@ -30,7 +30,7 @@ func main() {
 	go router.RunApp()
 
 	<-quit
-	model.Close()
+	db.Close()
 	logs.Info("app quitted")
 	logs.Flush()
 }

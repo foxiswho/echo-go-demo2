@@ -1,10 +1,16 @@
 package entity
 
-import "time"
+import (
+	"time"
+
+	"github.com/labstack/gommon/log"
+	"github.com/qiniu/x/log"
+	"github.com/zxysilent/blog/middleware/db"
+)
 
 type IamAccount struct {
-	Id               int64     `xorm:"pk BIGINT(20)"`
-	CreateTime       time.Time `xorm:"created default current_timestamp() comment('创建时间') index DATETIME"`
+	Id               int64     `gorm:"primaryKey" xorm:"pk BIGINT(20)"`
+	CreateTime       time.Time `gorm:"autoCreateTime" xorm:"created default current_timestamp() comment('创建时间') index DATETIME"`
 	UpdateTime       time.Time `xorm:"updated comment('更新时间') DATETIME"`
 	CreateId         int64     `xorm:"not null default 0 comment('创建人') index BIGINT(20)"`
 	UpdateId         int64     `xorm:"not null default 0 comment('更新人') BIGINT(20)"`
@@ -38,4 +44,41 @@ func (c IamAccount) TableName() string {
 
 func NewIamAccount() *IamAccount {
 	return new(IamAccount)
+}
+
+// 获取单条数据
+func (c IamAccount) FindById(id int64) (info IamAccount) {
+	// da.Find(&info, id)
+	db.Db().Where("id=?", id).Find(&info)
+	return
+}
+
+// 获取多数据
+func (c IamAccount) FindAll() (list IamAccount) {
+	// da.Find(&info, id)
+	db.Db().Find(&list)
+	return
+}
+
+// 更新
+func (c IamAccount) Update(info IamAccount) (int64, error) {
+	// da.Find(&info, id)
+	result := db.Db().Model(&IamAccount{}).Updates(info)
+	if result.Error != nil {
+		log.Error("failed to connect database")
+		return 0, result.Error
+	}
+	return result.RowsAffected, nil
+}
+
+// 创建
+func (c IamAccount) Create(info IamAccount) (int64, error) {
+	// da.Find(&info, id)
+	result := db.Db().Model(&IamAccount{}).Create(&info)
+	if result.Error != nil {
+		log.Error("failed to connect database")
+		return 0, result.Error
+	}
+	log.Infof("create.RowsAffected=%v", result.RowsAffected)
+	return info.Id, nil
 }
