@@ -1,0 +1,9 @@
+kind: reverse
+name: testdb
+source:
+  database: mysql
+  conn_str: 'root:root@tcp(localhost:55000)/change72?charset=utf8mb4&parseTime=True&loc=Local'
+targets:
+- type: codes
+  language: golang
+  output_dir: ./testoutput
