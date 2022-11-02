@@ -15,11 +15,15 @@ func RunApp() {
 	engine.Renderer = initRender()                    // 初始渲染引擎
 	engine.Use(midRecover, midLogger)                 // 恢复 日志记录
 	engine.Use(middleware.CORSWithConfig(crosConfig)) // 跨域设置
-	engine.HideBanner = true                          // 不显示横幅
-	engine.HTTPErrorHandler = HTTPErrorHandler        // 自定义错误处理
-	engine.Debug = true                               // 运行模式 - echo框架好像没怎么使用这个
-	RegDocs(engine)                                   // 注册文档
-	engine.Static("/dist", "dist")                    // 静态目录 - 后端专用
+	engine.Use(middleware.JWTWithConfig(middleware.JWTConfig{
+		SigningKey:  []byte("secret"),
+		TokenLookup: "query:token",
+	}))
+	engine.HideBanner = true                   // 不显示横幅
+	engine.HTTPErrorHandler = HTTPErrorHandler // 自定义错误处理
+	engine.Debug = true                        // 运行模式 - echo框架好像没怎么使用这个
+	RegDocs(engine)                            // 注册文档
+	engine.Static("/dist", "dist")             // 静态目录 - 后端专用
 	//engine.StaticFS("/static", bi.StaticFS)           // 静态目录
 	engine.Static("/static", "static")            // 静态目录
 	engine.File("/favicon.ico", "favicon.ico")    // ico
