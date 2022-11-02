@@ -4,8 +4,8 @@ port = 8099
 version = "0.0.1"
 
 [app.datasource]
-url = "tcp(localhost:55000)/change72?charset=utf8mb4&parseTime=True&loc=Local"
-port = 55000
+url = "tcp(localhost:3306)/change72?charset=utf8mb4&parseTime=True&loc=Local"
+port = 3306
 username = "root"
 password = "root"
 
