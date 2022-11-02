@@ -1,6 +1,10 @@
 package router
 
 import (
+	"errors"
+	"fmt"
+
+	"github.com/golang-jwt/jwt"
 	"github.com/pangu-2/pangu-config/configs"
 	"github.com/zxysilent/blog/internal/controller"
 
@@ -15,10 +19,35 @@ func RunApp() {
 	engine.Renderer = initRender()                    // 初始渲染引擎
 	engine.Use(midRecover, midLogger)                 // 恢复 日志记录
 	engine.Use(middleware.CORSWithConfig(crosConfig)) // 跨域设置
-	engine.Use(middleware.JWTWithConfig(middleware.JWTConfig{
-		SigningKey:  []byte("secret"),
+	// engine.Use(middleware.JWTWithConfig(middleware.JWTConfig{
+	// 	SigningKey:  []byte("secret"),
+	// 	TokenLookup: "query:token",
+	// }))
+	signingKey := []byte("secret")
+
+	config := middleware.JWTConfig{
 		TokenLookup: "query:token",
-	}))
+		ParseTokenFunc: func(auth string, c echo.Context) (interface{}, error) {
+			keyFunc := func(t *jwt.Token) (interface{}, error) {
+				if t.Method.Alg() != "HS256" {
+					return nil, fmt.Errorf("unexpected jwt signing method=%v", t.Header["alg"])
+				}
+				return signingKey, nil
+			}
+
+			// claims are of type `jwt.MapClaims` when token is created with `jwt.Parse`
+			token, err := jwt.Parse(auth, keyFunc)
+			if err != nil {
+				return nil, err
+			}
+			if !token.Valid {
+				return nil, errors.New("invalid token")
+			}
+			return token, nil
+		},
+	}
+
+	engine.Use(middleware.JWTWithConfig(config))
 	engine.HideBanner = true                   // 不显示横幅
 	engine.HTTPErrorHandler = HTTPErrorHandler // 自定义错误处理
 	engine.Debug = true                        // 运行模式 - echo框架好像没怎么使用这个
