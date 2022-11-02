@@ -1,4 +1,4 @@
-package baseMAuth
+package baseAuth
 
 import (
 	"encoding/json"

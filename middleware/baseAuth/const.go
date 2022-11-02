@@ -1,4 +1,4 @@
-package baseMAuth
+package baseAuth
 
 const (
 	//用于存储对象

@@ -56,3 +56,12 @@ func TestXest(t *testing.T) {
 	}
 
 }
+
+func TestMake(t *testing.T) {
+	x, err := MakeJwt("xxxx", true)
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Println(x)
+	}
+}
