@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/pangu-2/go-echo-demo/pkg/base/browser"
-	"github.com/pangu-2/go-echo-demo/pkg/base/holder"
+	"github.com/pangu-2/go-echo-demo/pkg/base/interfaces"
 )
 
 type ISessionTokenPg interface {
@@ -47,9 +47,9 @@ type SessionToken struct {
 	/**
 	 * 0 在线 10已刷新 20 离线
 	 */
-	Status        int
-	SessionHolder holder.IHolderPg //用户Session 会话信息
-	Browser       browser.IBrowser //浏览器
+	Status  int
+	Holder  interfaces.IHolderPg //用户Session 会话信息
+	Browser browser.IBrowser     //浏览器
 	/**
 	 * 额外的，扩展
 	 */

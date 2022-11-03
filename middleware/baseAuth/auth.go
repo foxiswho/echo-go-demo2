@@ -9,6 +9,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/pangu-2/go-echo-demo/kit/base/const/constContext"
 	"github.com/pangu-2/go-echo-demo/pkg/base/holder"
+	"github.com/pangu-2/go-echo-demo/pkg/base/interfaces"
 )
 
 func NewDefault() echo.MiddlewareFunc {
@@ -33,8 +34,8 @@ func NewDefault() echo.MiddlewareFunc {
 }
 
 // shortcut to get Auth
-func Get(c echo.Context) holder.IHolderPg {
-	return c.Get(AUTH_LOGIN).(holder.SessionHolder)
+func Get(c echo.Context) interfaces.IHolderPg {
+	return c.Get(AUTH_LOGIN).(holder.HolderSimple)
 }
 
 // shortcut to get Auth
@@ -47,12 +48,12 @@ func GetIs(c echo.Context) bool {
 }
 
 // 处理 登陆用户信息
-func processAuthSession(c echo.Context) (holder.IHolderPg, bool) {
+func processAuthSession(c echo.Context) (interfaces.IHolderPg, bool) {
 	header := c.Request().Header
 	log.Debugf("header=%#v", header)
 	log.Infof("header=%#v", header)
 	get := header.Get(constContext.HEADER_AUTH)
-	auth := holder.SessionHolder{}
+	auth := holder.HolderSimple{}
 	covAuth := false
 	if len(get) > 0 {
 		unescape, err := url.QueryUnescape(get)

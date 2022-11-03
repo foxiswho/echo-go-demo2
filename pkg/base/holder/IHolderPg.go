@@ -6,14 +6,10 @@ import (
 	"github.com/pangu-2/go-echo-demo/pkg/base/holder/multitenant"
 )
 
-type IHolderPg interface {
-}
-
-// SessionHolder 用户Session 会话信息 登录人信息
-type SessionHolder struct {
+// HolderSimple 用户Session 会话信息 登录人信息
+type HolderSimple struct {
 	MultiTenant   multitenant.IMultiTenantPg `json:"multiTenant"`   //多租户
 	LoginId       int64                      `json:"loginId"`       //登录用户ID
-	SessionNo     string                     `json:"sessionNo"`     //session编号
 	No            string                     `json:"no"`            //系统编号
 	LoginUserName string                     `json:"loginUserName"` //登录用户名
 	Name          string                     `json:"name"`          //显示名称
@@ -27,11 +23,11 @@ type SessionHolder struct {
 	Extra         interface{}                `json:"extra"`         //额外的，扩展
 }
 
-func (s SessionHolder) Get() SessionHolder {
+func (s HolderSimple) Get() HolderSimple {
 	return s
 }
 
-func (s SessionHolder) ToJsonString() (string, error) {
+func (s HolderSimple) ToJsonString() (string, error) {
 	marshal, err := json.Marshal(s)
 	if err != nil {
 		return "", err

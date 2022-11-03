@@ -1,38 +1,33 @@
-package jwt
+package jwtMid
 
 import (
 	"errors"
 	"fmt"
 	"time"
 
-	"github.com/golang-jwt/jwt"
 	jwtG "github.com/golang-jwt/jwt"
 	"github.com/jinzhu/copier"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/pangu-2/go-echo-demo/internal/consts"
+	"github.com/pangu-2/go-echo-demo/middleware/baseAuth"
 	"github.com/pangu-2/go-echo-demo/pkg/base/holder/jwtHolder"
+	"github.com/pangu-2/go-echo-demo/pkg/base/interfaces"
 	"github.com/pangu-2/pangu-config/configs"
 )
 
-type jwtCustomClaims struct {
-	Name  string `json:"name"`
-	Admin bool   `json:"admin"`
-	jwtG.StandardClaims
-}
-
 // JwtPg 用户 会话信息 登录人信息
 type Jwt struct {
-	MultiTenant   jwtHolder.JwtMultiTenantPg `json:"mTenant" multiTenant` //多租户
-	No            string                     `json:"no"`                  //系统编号
-	LoginUserName string                     `json:"loginUserName"`       //登录用户名
-	Name          string                     `json:"name"`                //显示名称
-	OrgName       string                     `json:"OrgName"`             //组织名称
-	TenantName    string                     `json:"tName"`               //组织名称
-	Type          int64                      `json:"type"`                //类型
-	Other         string                     `json:"other"`               //其他信息
-	Version       string                     `json:"version"`             //版本
-	Extra         interface{}                `json:"extra"`               //额外的，扩展
+	MultiTenant   interfaces.IMultiTenantPg `json:"mTenant,omitempty" multiTenant` //多租户
+	No            string                    `json:"no"`                            //系统编号
+	LoginUserName string                    `json:"loginUserName"`                 //登录用户名
+	Name          string                    `json:"name"`                          //显示名称
+	OrgName       string                    `json:"OrgName,omitempty"`             //组织名称
+	TenantName    string                    `json:"tName,omitempty"`               //组织名称
+	Type          int64                     `json:"type,omitempty"`                //类型
+	Other         string                    `json:"other,omitempty"`               //其他信息
+	Version       string                    `json:"version,omitempty"`             //版本
+	Extra         interface{}               `json:"extra,omitempty"`               //额外的，扩展
 	jwtG.StandardClaims
 
 	// LoginNo       string                     `json:"loginNo"`             //登录用户No,随时可以修改变动
@@ -77,7 +72,7 @@ func MakeJwt(param jwtHolder.JwtPg, module consts.AppModule) (string, error) {
 	// jti: jwt的唯一身份标识，主要用来作为一次性token,从而回避重放攻击。
 
 	// Create token with claims
-	token := jwtG.NewWithClaims(jwt.SigningMethodHS256, claims)
+	token := jwtG.NewWithClaims(jwtG.SigningMethodHS256, claims)
 	// Generate encoded token and send it as response.
 	t, err := token.SignedString([]byte("secret"))
 	if err != nil {
@@ -98,7 +93,7 @@ func UseMidJwt(module consts.AppModule) echo.MiddlewareFunc {
 	config := middleware.JWTConfig{
 		SigningMethod: jwtG.SigningMethodES512.Name,
 		SigningKey:    signingKey,
-		ContextKey:    "user",
+		ContextKey:    baseAuth.AUTH_LOGIN,
 		TokenLookup:   "header:" + echo.HeaderAuthorization,
 		AuthScheme:    "Bearer",
 		Claims:        jwtG.MapClaims{},
@@ -116,7 +111,7 @@ func UseMidJwtCustom(module consts.AppModule) echo.MiddlewareFunc {
 		signingKey = []byte(jwtC.Web.Secret)
 	}
 	config := middleware.JWTConfig{
-		ContextKey:  "user",
+		ContextKey:  baseAuth.AUTH_LOGIN,
 		TokenLookup: "header:" + echo.HeaderAuthorization,
 		ParseTokenFunc: func(auth string, c echo.Context) (interface{}, error) {
 			keyFunc := func(t *jwtG.Token) (interface{}, error) {

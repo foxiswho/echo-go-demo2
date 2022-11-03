@@ -3,15 +3,13 @@ package model
 import (
 	"encoding/json"
 
-	"github.com/pangu-2/go-echo-demo/pkg/base/holder"
-	"github.com/pangu-2/go-echo-demo/pkg/base/holder/multitenant"
+	"github.com/pangu-2/go-echo-demo/pkg/base/interfaces"
 )
 
 type BaseQueryByIdThatIdVdo[ID any] struct {
-	Id            ID                         `json:"id"`
-	IdThat        ID                         `json:"idThat"`
-	MultiTenant   multitenant.IMultiTenantPg `json:"multiTenant"`   //多租户
-	SessionHolder holder.IHolderPg           `json:"sessionHolder"` // 会话信息
+	Id     ID                   `json:"id"`
+	IdThat ID                   `json:"idThat"`
+	Holder interfaces.IHolderPg `json:"holder"` // 会话信息
 }
 
 func (c BaseQueryByIdThatIdVdo) ToJsonString() (string, error) {

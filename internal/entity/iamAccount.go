@@ -3,9 +3,8 @@ package entity
 import (
 	"time"
 
-	"github.com/labstack/gommon/log"
+	"gitea.com/lunny/log"
 	"github.com/pangu-2/go-echo-demo/middleware/db"
-	"github.com/qiniu/x/log"
 )
 
 type IamAccount struct {

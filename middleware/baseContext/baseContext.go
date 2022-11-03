@@ -8,6 +8,7 @@ import (
 	"gitea.com/lunny/log"
 	"github.com/labstack/echo/v4"
 	"github.com/pangu-2/go-echo-demo/middleware/baseAuth"
+	"github.com/pangu-2/go-echo-demo/pkg/base/interfaces"
 )
 
 type BaseContext struct {
@@ -147,18 +148,18 @@ func (ctx *BaseContext) CookieDel(name string) {
 }
 
 // 获取登陆用户信息,得到的是副本,修改后数据,不会体现在原数据中
-func (ctx *BaseContext) AuthSession() holder.IHolderPg {
+func (ctx *BaseContext) AuthHolder() interfaces.IHolderPg {
 	return baseAuth.Get(ctx)
 }
 
 // 获取登陆用户信息,得到的原始数据,修改后,原始数据 即为修改
-func (ctx *BaseContext) AuthSessionPointer() *holder.IHolderPg {
+func (ctx *BaseContext) AuthHolderPointer() *interfaces.IHolderPg {
 	get := baseAuth.Get(ctx)
 	return &get
 }
 
 // 用户是否登陆
-func (ctx *BaseContext) AuthSessionIs() bool {
+func (ctx *BaseContext) AuthHolderIs() bool {
 	return baseAuth.GetIs(ctx)
 }
 
