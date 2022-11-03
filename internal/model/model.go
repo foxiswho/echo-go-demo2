@@ -10,7 +10,7 @@ import (
 
 	// 数据库驱动
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/zxysilent/blog/internal/logs"
+	"github.com/pangu-2/go-echo-demo/internal/logs"
 	xlog "xorm.io/xorm/log"
 )
 

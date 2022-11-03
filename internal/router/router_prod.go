@@ -5,7 +5,7 @@ package router
 
 import (
 	"github.com/labstack/echo/v4"
-	"github.com/zxysilent/blog/internal/logs"
+	"github.com/pangu-2/go-echo-demo/internal/logs"
 )
 
 const AppJsUrl = "/static/js/app.min.js"

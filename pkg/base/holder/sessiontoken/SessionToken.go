@@ -3,8 +3,8 @@ package sessiontoken
 import (
 	"time"
 
-	"github.com/zxysilent/blog/pkg/base/browser"
-	"github.com/zxysilent/blog/pkg/base/holder/session"
+	"github.com/pangu-2/go-echo-demo/pkg/base/browser"
+	"github.com/pangu-2/go-echo-demo/pkg/base/holder"
 )
 
 type ISessionTokenPg interface {
@@ -48,8 +48,8 @@ type SessionToken struct {
 	 * 0 在线 10已刷新 20 离线
 	 */
 	Status        int
-	SessionHolder session.ISessionHolderPg //用户Session 会话信息
-	Browser       browser.IBrowser         //浏览器
+	SessionHolder holder.IHolderPg //用户Session 会话信息
+	Browser       browser.IBrowser //浏览器
 	/**
 	 * 额外的，扩展
 	 */

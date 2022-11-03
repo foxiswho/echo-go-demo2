@@ -10,11 +10,11 @@ import (
 	"sync"
 	"time"
 
-	_ "github.com/zxysilent/blog/docs"
+	_ "github.com/pangu-2/go-echo-demo/docs"
 
 	"github.com/labstack/echo/v4"
+	"github.com/pangu-2/go-echo-demo/internal/logs"
 	echoSwagger "github.com/swaggo/echo-swagger"
-	"github.com/zxysilent/blog/internal/logs"
 )
 
 const AppJsUrl = "/static/js/app.js"

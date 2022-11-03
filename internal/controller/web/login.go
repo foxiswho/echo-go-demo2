@@ -1,6 +1,7 @@
 package web
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 
@@ -8,7 +9,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type jwtCustomClaims struct {
+type JwtCustomClaims2 struct {
 	Name  string `json:"name"`
 	Admin bool   `json:"admin"`
 	jwt.StandardClaims
@@ -24,7 +25,7 @@ func Login(c echo.Context) error {
 	}
 
 	// Set custom claims
-	claims := &jwtCustomClaims{
+	claims := &JwtCustomClaims2{
 		"Jon Snow",
 		true,
 		jwt.StandardClaims{
@@ -48,7 +49,19 @@ func Login(c echo.Context) error {
 
 func Restricted(c echo.Context) error {
 	user := c.Get("user").(*jwt.Token)
-	claims := user.Claims.(*jwtCustomClaims)
-	name := claims.Name
+	fmt.Println("Restricted=", user)
+	fmt.Println("Restricted.Header=", user.Header)
+	fmt.Println("Restricted.Method=", user.Method)
+	fmt.Println("Restricted.Raw=", user.Raw)
+	fmt.Println("Restricted.Signature=", user.Signature)
+	fmt.Println("Restricted.Valid=", user.Valid)
+	claims := user.Claims
+
+	fmt.Println("xxxxxxx")
+	fmt.Println("xxxxxxx")
+	fmt.Println(claims)
+	xxx := user.Claims.(*JwtCustomClaims2)
+	fmt.Println(xxx)
+	name := "xxx"
 	return c.String(http.StatusOK, "Welcome "+name+"!")
 }

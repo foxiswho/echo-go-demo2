@@ -5,13 +5,13 @@ import (
 	"fmt"
 
 	"github.com/golang-jwt/jwt"
+	"github.com/pangu-2/go-echo-demo/internal/controller"
+	"github.com/pangu-2/go-echo-demo/internal/controller/web"
 	"github.com/pangu-2/pangu-config/configs"
-	"github.com/zxysilent/blog/internal/controller"
-	"github.com/zxysilent/blog/internal/controller/web"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	"github.com/zxysilent/blog/internal/logs"
+	"github.com/pangu-2/go-echo-demo/internal/logs"
 )
 
 // RunApp 入口
@@ -27,8 +27,10 @@ func RunApp() {
 	signingKey := []byte("secret")
 
 	config := middleware.JWTConfig{
-		TokenLookup: "query:token",
+		Claims: &web.JwtCustomClaims2{},
+		//TokenLookup: "query:token",
 		ParseTokenFunc: func(auth string, c echo.Context) (interface{}, error) {
+			fmt.Println("middleware.JWTConfig=", auth)
 			keyFunc := func(t *jwt.Token) (interface{}, error) {
 				if t.Method.Alg() != "HS256" {
 					return nil, fmt.Errorf("unexpected jwt signing method=%v", t.Header["alg"])
@@ -41,6 +43,7 @@ func RunApp() {
 			if err != nil {
 				return nil, err
 			}
+			fmt.Println(token)
 			if !token.Valid {
 				return nil, errors.New("invalid token")
 			}
@@ -48,7 +51,7 @@ func RunApp() {
 		},
 	}
 
-	e.Use(middleware.JWTWithConfig(config))
+	// e.Use(middleware.JWTWithConfig(config))
 	e.HideBanner = true                   // 不显示横幅
 	e.HTTPErrorHandler = HTTPErrorHandler // 自定义错误处理
 	e.Debug = true                        // 运行模式 - echo框架好像没怎么使用这个
@@ -67,11 +70,11 @@ func RunApp() {
 	// Restricted group
 	r := e.Group("/restricted")
 	// Configure middleware with the custom claims type
-	// config := middleware.JWTConfig{
-	// 	Claims:     &jwtCustomClaims{},
+	// config2 := middleware.JWTConfig{
+	// 	Claims:     &web.JwtCustomClaims2{},
 	// 	SigningKey: []byte("secret"),
 	// }
-	// r.Use(middleware.JWTWithConfig(config))
+	r.Use(middleware.JWTWithConfig(config))
 	r.GET("", web.Restricted)
 	// qq登录
 	// engine.GET("/login/qq.html", sysctl.ViewLoginQq)

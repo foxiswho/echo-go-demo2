@@ -7,8 +7,8 @@ import (
 
 	"gitea.com/lunny/log"
 	"github.com/labstack/echo/v4"
-	"github.com/zxysilent/blog/kit/base/const/constContext"
-	"github.com/zxysilent/blog/pkg/base/holder/session"
+	"github.com/pangu-2/go-echo-demo/kit/base/const/constContext"
+	"github.com/pangu-2/go-echo-demo/pkg/base/holder"
 )
 
 func NewDefault() echo.MiddlewareFunc {
@@ -33,8 +33,8 @@ func NewDefault() echo.MiddlewareFunc {
 }
 
 // shortcut to get Auth
-func Get(c echo.Context) session.ISessionHolderPg {
-	return c.Get(AUTH_LOGIN).(session.SessionHolder)
+func Get(c echo.Context) holder.IHolderPg {
+	return c.Get(AUTH_LOGIN).(holder.SessionHolder)
 }
 
 // shortcut to get Auth
@@ -47,12 +47,12 @@ func GetIs(c echo.Context) bool {
 }
 
 // 处理 登陆用户信息
-func processAuthSession(c echo.Context) (session.ISessionHolderPg, bool) {
+func processAuthSession(c echo.Context) (holder.IHolderPg, bool) {
 	header := c.Request().Header
 	log.Debugf("header=%#v", header)
 	log.Infof("header=%#v", header)
 	get := header.Get(constContext.HEADER_AUTH)
-	auth := session.SessionHolder{}
+	auth := holder.SessionHolder{}
 	covAuth := false
 	if len(get) > 0 {
 		unescape, err := url.QueryUnescape(get)

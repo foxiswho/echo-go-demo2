@@ -2,7 +2,7 @@ package controller
 
 import (
 	"github.com/labstack/echo/v4"
-	"github.com/zxysilent/blog/internal/controller/admin"
+	"github.com/pangu-2/go-echo-demo/internal/controller/admin"
 )
 
 // admRouter 登录访问

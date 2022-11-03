@@ -1,17 +1,16 @@
-module github.com/zxysilent/blog
+module github.com/pangu-2/go-echo-demo
 
 // 以下会指定编译版本
 go 1.19
 
 require (
-	github.com/beego/beego/v2 v2.0.5
 	github.com/fanjindong/go-cache v0.0.5
 	github.com/go-redis/redis/v9 v9.0.0-rc.1
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/golang-jwt/jwt/v4 v4.4.2
 	github.com/labstack/echo/v4 v4.9.1
 	github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646
-	github.com/pangu-2/pangu-config v0.0.2
+	github.com/pangu-2/pangu-config v0.0.4
 	github.com/pkg/errors v0.9.1
 	github.com/qiniu/x v1.11.9
 	github.com/stretchr/testify v1.8.1
@@ -22,18 +21,7 @@ require (
 	xorm.io/xorm v1.3.2
 )
 
-require (
-	github.com/beorn7/perks v1.0.1 // indirect
-	github.com/golang/protobuf v1.5.2 // indirect
-	github.com/hashicorp/golang-lru v0.5.4 // indirect
-	github.com/matttproud/golang_protobuf_extensions v1.0.1 // indirect
-	github.com/prometheus/client_golang v1.12.1 // indirect
-	github.com/prometheus/client_model v0.2.0 // indirect
-	github.com/prometheus/common v0.32.1 // indirect
-	github.com/prometheus/procfs v0.7.3 // indirect
-	github.com/shiena/ansicolor v0.0.0-20200904210342-c7312218db18 // indirect
-	google.golang.org/protobuf v1.28.0 // indirect
-)
+require github.com/jinzhu/copier v0.3.5 // indirect
 
 require (
 	gitea.com/lunny/log v0.0.0-20190322053110-01b5df579c4e

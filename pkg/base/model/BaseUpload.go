@@ -4,12 +4,12 @@ import (
 	"encoding/json"
 	"mime/multipart"
 
-	"github.com/zxysilent/blog/pkg/base/holder/session"
+	"github.com/pangu-2/go-echo-demo/pkg/base/holder"
 )
 
 type BaseUploadBo struct {
 	File          *multipart.FileHeader
-	SessionHolder session.ISessionHolderPg `json:"sessionHolder"` // 会话信息
+	SessionHolder holder.IHolderPg `json:"sessionHolder"` // 会话信息
 }
 type Option func(*BaseUploadBo)
 

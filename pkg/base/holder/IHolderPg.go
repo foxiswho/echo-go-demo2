@@ -1,12 +1,12 @@
-package session
+package holder
 
 import (
 	"encoding/json"
 
-	"github.com/zxysilent/blog/pkg/base/holder/multitenant"
+	"github.com/pangu-2/go-echo-demo/pkg/base/holder/multitenant"
 )
 
-type ISessionHolderPg interface {
+type IHolderPg interface {
 }
 
 // SessionHolder 用户Session 会话信息 登录人信息

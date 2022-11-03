@@ -8,7 +8,7 @@
 				</a>
 			</div>
 			<div class="desc">
-				github.com/zxysilent/blog
+				github.com/pangu-2/go-echo-demo
 			</div>
 		</div>
 		<div class="main">

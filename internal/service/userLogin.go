@@ -1,6 +1,6 @@
 package service
 
-import "github.com/zxysilent/blog/internal/model/loginModel"
+import "github.com/pangu-2/go-echo-demo/internal/model/loginModel"
 
 type userLogin struct {
 }

@@ -20,7 +20,7 @@
 
 ## 仓库地址
 ## Repository  address 
-[github(https://github.com/zxysilent/blog)](https://github.com/zxysilent/blog)
+[github(https://github.com/pangu-2/go-echo-demo)](https://github.com/pangu-2/go-echo-demo)
 
 [gitee(https://gitee.com/zxysilent/blog)](https://gitee.com/zxysilent/blog)
 ## 开发原因 
@@ -55,7 +55,7 @@
 
 ## 使用方式-直接部署
 ```
-git clone -b v0.4.0 --depth=1 https://github.com/zxysilent/blog.git
+git clone -b v0.4.0 --depth=1 https://github.com/pangu-2/go-echo-demo.git
 ```
 若要部署，请修改关键信息[token、用户名、密码等]
 数据库自带文章内容请在部署前删除
@@ -84,7 +84,7 @@ git clone -b v0.4.0 --depth=1 https://github.com/zxysilent/blog.git
 
 ## 使用方式-自定义开发
 ```
-git clone https://github.com/zxysilent/blog.git
+git clone https://github.com/pangu-2/go-echo-demo.git
 ```
 若要部署，请修改关键信息[token、用户名、密码等]
 数据库自带文章内容请在部署前删除

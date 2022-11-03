@@ -4,8 +4,8 @@ import (
 	"time"
 
 	"github.com/labstack/gommon/log"
+	"github.com/pangu-2/go-echo-demo/middleware/db"
 	"github.com/qiniu/x/log"
-	"github.com/zxysilent/blog/middleware/db"
 )
 
 type IamAccount struct {

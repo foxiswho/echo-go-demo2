@@ -8,10 +8,10 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/zxysilent/blog/internal/model"
-	"github.com/zxysilent/blog/internal/token"
-	"github.com/zxysilent/blog/internal/tools/rate"
-	"github.com/zxysilent/blog/internal/vcode"
+	"github.com/pangu-2/go-echo-demo/internal/model"
+	"github.com/pangu-2/go-echo-demo/internal/token"
+	"github.com/pangu-2/go-echo-demo/internal/tools/rate"
+	"github.com/pangu-2/go-echo-demo/internal/vcode"
 
 	"github.com/labstack/echo/v4"
 	"github.com/zxysilent/utils"

@@ -5,11 +5,11 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/pangu-2/go-echo-demo/internal/router"
+	"github.com/pangu-2/go-echo-demo/middleware/db"
 	"github.com/pangu-2/pangu-config/configs"
-	"github.com/zxysilent/blog/internal/router"
-	"github.com/zxysilent/blog/middleware/db"
 
-	"github.com/zxysilent/blog/internal/logs"
+	"github.com/pangu-2/go-echo-demo/internal/logs"
 )
 
 // @Title Blog’s 接口文档

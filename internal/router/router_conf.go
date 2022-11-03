@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/zxysilent/blog/internal/token"
+	"github.com/pangu-2/go-echo-demo/internal/token"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -214,8 +214,8 @@ const html404 = `<!DOCTYPE html>
         </div>
         <div class="footer">
             <div class="footer-links">
-                <a href="https://blog.zxysilent.com"  target="_blank" title="github.com/zxysilent/blog">blog</a>
-                <a href="https://github.com/zxysilent/blog" target="_blank" title="github">github</a>
+                <a href="https://blog.zxysilent.com"  target="_blank" title="github.com/pangu-2/go-echo-demo">blog</a>
+                <a href="https://github.com/pangu-2/go-echo-demo" target="_blank" title="github">github</a>
                 <a href="https://github.com/zxysilent" target="_blank" title="查看作者">作者</a>
             </div>
             <div class="footer-copyright">Copyright &copy; <script>document.write(new Date().getFullYear());</script>&nbsp;<a target="_blank" href="https://github.com/zxysilent">github.com/zxysilent</a></div>
