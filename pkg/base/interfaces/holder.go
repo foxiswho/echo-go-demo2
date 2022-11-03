@@ -32,3 +32,7 @@ type StandardHolder struct {
 	Other       *IHolderOtherPg        `json:"other,omitempty" commont:"其他数据"`
 	Map         map[string]interface{} `json:"map,omitempty" commont:"map"`
 }
+
+func NewStandardHolder() *StandardHolder {
+	return new(StandardHolder)
+}

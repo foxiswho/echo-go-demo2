@@ -1,18 +1,20 @@
 package baseAuth
 
 import (
-	"encoding/json"
 	"net/http"
-	"net/url"
 
-	"gitea.com/lunny/log"
+	"github.com/golang-jwt/jwt"
+	"github.com/jinzhu/copier"
 	"github.com/labstack/echo/v4"
-	"github.com/pangu-2/go-echo-demo/kit/base/const/constContext"
+	"github.com/pangu-2/go-echo-demo/middleware/jwtMid"
+	"github.com/pangu-2/go-echo-demo/pkg/base/const/constContext"
 	"github.com/pangu-2/go-echo-demo/pkg/base/holder"
+	"github.com/pangu-2/go-echo-demo/pkg/base/holder/jwtHolder"
 	"github.com/pangu-2/go-echo-demo/pkg/base/interfaces"
 )
 
-func NewDefault() echo.MiddlewareFunc {
+// @loginVerify true: 验证登陆
+func NewAuthDefault(loginVerify bool) echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 			//获取登陆用户数据
@@ -28,19 +30,23 @@ func NewDefault() echo.MiddlewareFunc {
 			// }
 			//白名单
 			//TODO 后期添加 FIXME
-			return echo.NewHTTPError(http.StatusUnauthorized, "jwt auth 没有任何信息")
+			//
+			if loginVerify {
+				return echo.NewHTTPError(http.StatusUnauthorized, "jwt auth 没有任何信息")
+			}
+			return next(c)
 		}
 	}
 }
 
 // shortcut to get Auth
 func Get(c echo.Context) interfaces.IHolderPg {
-	return c.Get(AUTH_LOGIN).(holder.HolderSimple)
+	return c.Get(constContext.AUTH_LOGIN).(holder.HolderSimple)
 }
 
 // shortcut to get Auth
 func GetIs(c echo.Context) bool {
-	get := c.Get(AUTH_LOGIN_IS)
+	get := c.Get(constContext.AUTH_LOGIN_IS)
 	if get != nil {
 		return get.(bool)
 	}
@@ -49,22 +55,31 @@ func GetIs(c echo.Context) bool {
 
 // 处理 登陆用户信息
 func processAuthSession(c echo.Context) (interfaces.IHolderPg, bool) {
-	header := c.Request().Header
-	log.Debugf("header=%#v", header)
-	log.Infof("header=%#v", header)
-	get := header.Get(constContext.HEADER_AUTH)
-	auth := holder.HolderSimple{}
-	covAuth := false
-	if len(get) > 0 {
-		unescape, err := url.QueryUnescape(get)
-		if err == nil && len(unescape) > 0 {
-			err := json.Unmarshal([]byte(unescape), &auth)
-			if err == nil {
-				covAuth = true
+	/////////////////////////////
+	login := c.Get(constContext.HOLDER)
+	hold := interfaces.NewStandardHolder()
+	loginIs := false
+	if login == nil {
+		auth := c.Get(constContext.AUTH_LOGIN)
+		if nil != auth {
+			user := c.Get(constContext.AUTH_LOGIN).(*jwt.Token)
+			if nil != user {
+				claimsJwt := user.Claims.(*jwtMid.Jwt)
+				jwtData := jwtHolder.NewJwtPg()
+				var jwtDataHolder interfaces.IHolderJwtPg
+				jwtDataHolder = jwtData
+				//复制对象
+				copier.Copy(&claimsJwt, &jwtDataHolder)
+				hold.Jwt = jwtDataHolder.(*interfaces.IHolderJwtPg)
+				if nil != jwtData.MultiTenant {
+					hold.MultiTenant = &jwtData.MultiTenant
+				}
+				c.Set(constContext.HOLDER, hold)
+				loginIs = true
 			}
 		}
 	}
-	c.Set(AUTH_LOGIN, auth)
-	c.Set(AUTH_LOGIN_IS, covAuth)
-	return auth, covAuth
+	// 设置会话 已有
+	c.Set(constContext.HOLDER_IS, true)
+	return hold, loginIs
 }

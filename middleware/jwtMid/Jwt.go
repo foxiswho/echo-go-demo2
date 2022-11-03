@@ -10,7 +10,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/pangu-2/go-echo-demo/internal/consts"
-	"github.com/pangu-2/go-echo-demo/middleware/baseAuth"
+	"github.com/pangu-2/go-echo-demo/pkg/base/const/constContext"
 	"github.com/pangu-2/go-echo-demo/pkg/base/holder/jwtHolder"
 	"github.com/pangu-2/go-echo-demo/pkg/base/interfaces"
 	"github.com/pangu-2/pangu-config/configs"
@@ -93,7 +93,7 @@ func UseMidJwt(module consts.AppModule) echo.MiddlewareFunc {
 	config := middleware.JWTConfig{
 		SigningMethod: jwtG.SigningMethodES512.Name,
 		SigningKey:    signingKey,
-		ContextKey:    baseAuth.AUTH_LOGIN,
+		ContextKey:    constContext.AUTH_LOGIN,
 		TokenLookup:   "header:" + echo.HeaderAuthorization,
 		AuthScheme:    "Bearer",
 		Claims:        jwtG.MapClaims{},
@@ -111,7 +111,7 @@ func UseMidJwtCustom(module consts.AppModule) echo.MiddlewareFunc {
 		signingKey = []byte(jwtC.Web.Secret)
 	}
 	config := middleware.JWTConfig{
-		ContextKey:  baseAuth.AUTH_LOGIN,
+		ContextKey:  constContext.AUTH_LOGIN,
 		TokenLookup: "header:" + echo.HeaderAuthorization,
 		ParseTokenFunc: func(auth string, c echo.Context) (interface{}, error) {
 			keyFunc := func(t *jwtG.Token) (interface{}, error) {

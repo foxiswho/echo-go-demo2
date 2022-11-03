@@ -20,3 +20,7 @@ type JwtPg struct {
 func NewJwtPg() *JwtPg {
 	return new(JwtPg)
 }
+
+func (c JwtPg) toNotPoint() JwtPg {
+	return c
+}

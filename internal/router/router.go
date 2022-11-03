@@ -4,6 +4,7 @@ import (
 	"github.com/pangu-2/go-echo-demo/internal/consts"
 	"github.com/pangu-2/go-echo-demo/internal/controller"
 	"github.com/pangu-2/go-echo-demo/internal/controller/web"
+	"github.com/pangu-2/go-echo-demo/middleware/baseAuth"
 	"github.com/pangu-2/go-echo-demo/middleware/jwtMid"
 	"github.com/pangu-2/pangu-config/configs"
 
@@ -28,6 +29,7 @@ func RunApp() {
 	e.Static("/static", "static")            // 静态目录
 	e.File("/favicon.ico", "favicon.ico")    // ico
 	e.File("/dashboard*", "dist/index.html") // 前后端分离页面
+
 	// 后台登录
 	e.GET("/login.html", func(ctx echo.Context) error {
 		// 302 临时重定向
@@ -38,6 +40,7 @@ func RunApp() {
 	r := e.Group("/restricted")
 	{
 		r.Use(jwtMid.UseMidJwt(consts.APP_WEB))
+		// r.Use(baseAuth.NewAuthDefault(true))
 		r.GET("", web.Restricted)
 	}
 
@@ -48,7 +51,7 @@ func RunApp() {
 	// engine.GET("/", appctl.ViewIndex)              // 首页
 	// engine.GET("/cate/:cate", appctl.ViewCatePost) // 分类
 	//--- 页面 -- end
-	controller.AdminRouter(e, midAuth)
+	controller.AdminRouter(e, jwtMid.UseMidJwt(consts.APP_WEB), baseAuth.NewAuthDefault(true))
 	err := e.Start(":" + configs.GetApplication().PortToString())
 	if err != nil {
 		logs.Fatal("run error :", err.Error())
